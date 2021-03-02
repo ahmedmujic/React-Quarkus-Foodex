@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CompanyService {
 
-    List<CompanyDto> getAllCompanies();
+    List<CompanyDto> getAllCompaniesByUserEmail(String userEmail);
     CompanyDto addCompany(CompanyDto companyDto, String userEmail);
     boolean editCompany(CompanyDto companyDto);
 }

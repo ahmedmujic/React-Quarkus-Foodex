@@ -12,7 +12,7 @@ public class Company extends PanacheEntity {
 
 
     private String companyName;
-    private Integer score;
+    private Double score;
     private String location;
 
     private String companyLogo;
@@ -28,8 +28,12 @@ public class Company extends PanacheEntity {
     @OneToMany(mappedBy = "company",  fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<Food> foods = new ArrayList<>();
 
-    public Integer getScore() {
+    public Double getScore() {
         return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
     }
 
     public String getLocation() {
@@ -64,9 +68,7 @@ public class Company extends PanacheEntity {
         this.companyImage = companyImage;
     }
 
-    public void setScore(Integer score) {
-        this.score = score;
-    }
+
 
     public List<Food> getFoods() {
         return foods;

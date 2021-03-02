@@ -7,9 +7,16 @@ public class FoodsDto {
     private String name;
     private List<ImageDto> imagesList;
 
+    private CategoryDto foodCategory;
 
 
+    public CategoryDto getFoodCategory() {
+        return foodCategory;
+    }
 
+    public void setFoodCategory(CategoryDto foodCategory) {
+        this.foodCategory = foodCategory;
+    }
 
     public String getName() {
         return name;

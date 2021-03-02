@@ -2,15 +2,24 @@ package ba.codecta.foodex.repository.entity;
 
 import ba.codecta.foodex.helpers.UserCompanyType;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class CompanyCategory extends PanacheEntity {
+public class CompanyCategory extends PanacheEntityBase {
+    @SequenceGenerator(
+            schema = "FoodEX",
+            name = "catSeq",
+            sequenceName = "CAT_SEQ",
+            allocationSize = 1
+    )
+    @GeneratedValue(generator = "catSeq", strategy = GenerationType.SEQUENCE)
+    @Id
+    @Column(name = "id", nullable = false)
+    private Integer id;
     private String category;
     private String categoryImageUrl;
 
@@ -39,6 +48,14 @@ public class CompanyCategory extends PanacheEntity {
 
     public void setCompanies(List<Company> companies) {
         this.companies = companies;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setCategory(UserCompanyType category) {

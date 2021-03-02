@@ -1,7 +1,7 @@
 
 
-INSERT INTO FoodEX.food(id, name, company_id)
-VALUES(1, 'Burger',1);
 
-INSERT INTO FoodEX.company(companyname)
-VALUES('Almy');
+
+INSERT INTO FoodEX.companycategory(id, category, categoryimageurl)
+VALUES(1, 'Restoraunt','https://res.cloudinary.com/dcedcuwsu/image/upload/v1614710764/nnloseeez5xp5z7ssy1m.png');
+

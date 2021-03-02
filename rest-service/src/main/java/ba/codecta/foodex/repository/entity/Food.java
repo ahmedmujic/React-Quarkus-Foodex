@@ -17,6 +17,17 @@ public class Food extends PanacheEntity {
     @ManyToOne()
     private Company company;
 
+    @ManyToOne
+    private FoodCategory foodCategory;
+
+    public FoodCategory getFoodCategory() {
+        return foodCategory;
+    }
+
+    public void setFoodCategory(FoodCategory foodCategory) {
+        this.foodCategory = foodCategory;
+    }
+
     public Company getCompany() {
         return company;
     }

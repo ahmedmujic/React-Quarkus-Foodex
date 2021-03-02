@@ -1,6 +1,5 @@
 package ba.codecta.foodex.services.impl;
 
-import ba.codecta.foodex.helpers.ArrayMapper;
 import ba.codecta.foodex.helpers.ObjectMapperUtils;
 import ba.codecta.foodex.repository.CompanyRepository;
 import ba.codecta.foodex.repository.UserRepository;
@@ -9,6 +8,7 @@ import ba.codecta.foodex.repository.entity.Food;
 import ba.codecta.foodex.repository.entity.Images;
 import ba.codecta.foodex.repository.entity.UserEntity;
 import ba.codecta.foodex.services.CompanyService;
+import ba.codecta.foodex.services.model.CategoryDto;
 import ba.codecta.foodex.services.model.CompanyDto;
 import ba.codecta.foodex.services.model.FoodsDto;
 import ba.codecta.foodex.services.model.ImageDto;
@@ -32,9 +32,9 @@ public class CompanyServiceImpl implements CompanyService {
     UserRepository userRepository;
 
     @Override
-    public List<CompanyDto> getAllCompanies() {
-        List<Company> companies = companyRepository.listAll();
-
+    public List<CompanyDto> getAllCompaniesByUserEmail(String email) {
+        UserEntity user = userRepository.findByEmail(email);
+        List<Company> companies = user.getCompanies();
 
         List<CompanyDto> companyDtos = new ArrayList<>();
 
@@ -62,6 +62,7 @@ public class CompanyServiceImpl implements CompanyService {
                 }
 
                 foodsDto.setImagesList(imageDtos);
+                foodsDto.setFoodCategory(ObjectMapperUtils.map(foodCompany.getFoodCategory(), CategoryDto.class));
                 foodsDtods.add(foodsDto);
             }
 

@@ -2,13 +2,11 @@ package ba.codecta.foodex;
 
 import java.util.List;
 
+import ba.codecta.foodex.services.CategoryService;
 import ba.codecta.foodex.services.CompanyService;
 import ba.codecta.foodex.services.FoodService;
 import ba.codecta.foodex.services.UserService;
-import ba.codecta.foodex.services.model.CompanyDto;
-import ba.codecta.foodex.services.model.FoodsDto;
-import ba.codecta.foodex.services.model.UserAuthDto;
-import ba.codecta.foodex.services.model.UserDto;
+import ba.codecta.foodex.services.model.*;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import javax.annotation.security.PermitAll;
@@ -33,6 +31,9 @@ public class MyResource {
 
     @Inject
     CompanyService companyService;
+
+    @Inject
+    CategoryService categoryService;
 
     private String getResponseString(SecurityContext ctx) {
         String name;
@@ -64,7 +65,7 @@ public class MyResource {
             if (registrationResult) {
                 return Response.ok().build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).build();
+                return Response.status(Response.Status.CONFLICT).build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -140,16 +141,44 @@ public class MyResource {
     @Path("/companies")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllFood(@Context UriInfo uriInfo) {
+    public Response getAllFood(@Context UriInfo uriInfo,  @Context SecurityContext ctx) {
+        System.out.println("Principal: " + ctx.getUserPrincipal().getName() + "jwt: " + jwt.getName());
+        if (ctx.getUserPrincipal().getName().equals(jwt.getName())) {
+            try {
+                System.out.println("uslo");
+                List<CompanyDto> allCompanies = companyService.getAllCompaniesByUserEmail(jwt.getName());
+
+                if (allCompanies != null) {
+
+                    UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+
+                    return Response.ok(uriBuilder.build()).entity(allCompanies).build();
+                } else {
+                    System.out.println("uslo3");
+                    return Response.status(Response.Status.BAD_REQUEST).build();
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
+    @GET
+    @Path("/categories")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCategories(@Context UriInfo uriInfo) {
         try {
-            System.out.println("uslo");
-            List<CompanyDto> allCompanies = companyService.getAllCompanies();
-            System.out.println(allCompanies.get(0).getCompanyName());
-            if (allCompanies != null) {
-                System.out.println("uslo2");
+
+            List<CategoryDto> allCategories = categoryService.listAllCategories();
+            if (allCategories != null) {
+
                 UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 
-                return Response.ok(uriBuilder.build()).entity(allCompanies).build();
+                return Response.ok(uriBuilder.build()).entity(allCategories).build();
             } else {
                 System.out.println("uslo3");
                 return Response.status(Response.Status.BAD_REQUEST).build();
@@ -159,7 +188,6 @@ public class MyResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-
 
     @POST
     @Path("/auth/login")
@@ -174,7 +202,7 @@ public class MyResource {
                 uriBuilder.path(Long.toString(loginResult.getId()));
                 return Response.ok(uriBuilder.build()).entity(loginResult).build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).build();
+                return Response.status(Response.Status.UNAUTHORIZED).build();
             }
         } catch (Exception e) {
             System.out.println(e);

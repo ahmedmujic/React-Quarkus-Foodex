@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     public UserDto login(UserAuthDto userAuthDto) {
         UserEntity userEntity = userRepository.findByEmail(userAuthDto.getEmail());
 
-        if(userEntity != null){
+        if(userEntity != null && Password.check(userAuthDto.getPassword(), userEntity.getPasswordHash()).withBCrypt()){
             System.out.println("logovali smo se jer je razlicito od null");
             UserDto userDto = new UserDto();
             userDto.setUsername(userEntity.getName());
