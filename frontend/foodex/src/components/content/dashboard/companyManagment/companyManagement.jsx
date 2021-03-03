@@ -6,8 +6,10 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import BusinessIcon from "@material-ui/icons/Business";
-
+import { CompanyModal } from "../../modals/company";
 import { makeStyles } from "@material-ui/core/styles";
+import { CompanyComponent } from "../../../companyComponent";
+import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles((theme) => ({
   root: {
     transform: "translateZ(0px)",
@@ -37,9 +39,25 @@ const useStyles = makeStyles((theme) => ({
 export function CompanyManagement() {
   const classes = useStyles();
   const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
+  const [companies, setCompanies] = useState();
   const [open, setOpen] = useState(false);
-  var companies = [];
-  const actions = [{ icon: <BusinessIcon />, name: "Add company" }];
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  const actions = [
+    {
+      icon: <BusinessIcon />,
+      name: "Add company",
+      action: handleOpenModal,
+    },
+  ];
 
   const handleClose = () => {
     setOpen(false);
@@ -49,8 +67,25 @@ export function CompanyManagement() {
     setOpen(true);
   };
 
+  function updateData() {
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.userToken}`,
+      },
+    };
+    fetch("http://127.0.0.1:8080/api/companies", requestOptions)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        setCompanies(data);
+      });
+  }
   useEffect(() => {
-    console.log(cookies);
     const requestOptions = {
       method: "GET",
       headers: {
@@ -66,11 +101,18 @@ export function CompanyManagement() {
       })
       .then((data) => {
         console.log(data);
+        setCompanies(data);
       });
   }, []);
 
   return (
     <div>
+      <CompanyModal
+        open={openModal}
+        handleOpenModal={handleOpenModal}
+        handleCloseModal={handleCloseModal}
+        updateData={updateData}
+      ></CompanyModal>
       <SpeedDial
         ariaLabel="SpeedDial example"
         className={classes.speedDial}
@@ -85,15 +127,32 @@ export function CompanyManagement() {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={handleClose}
+            onClick={action.action}
           />
         ))}
       </SpeedDial>
-      {companies.length === 0 ? (
+      {companies === undefined || companies.length === 0 ? (
         <div className="noContent">
           <SentimentVeryDissatisfiedIcon /> Nothing to show
         </div>
-      ) : null}
+      ) : (
+        <div className="company-container">
+          <Grid container spacing={3} direction="row">
+            {companies.map((company) => {
+              return (
+                <Grid item className="company-item">
+                  <CompanyComponent
+                    logoUrl={company.companyLogo}
+                    companyName={company.companyName}
+                    companyImage={company.companyImage}
+                    companyLocation={company.location}
+                  ></CompanyComponent>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </div>
+      )}
     </div>
   );
 }

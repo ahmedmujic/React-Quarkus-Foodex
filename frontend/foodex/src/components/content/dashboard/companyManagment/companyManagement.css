@@ -9,3 +9,11 @@
   justify-content: center;
   align-items: center;
 }
+.index {
+  z-index: 300;
+}
+.company-container {
+  cursor: pointer;
+  flex-grow: 1;
+  margin: 100px;
+}

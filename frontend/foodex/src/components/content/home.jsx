@@ -15,6 +15,7 @@ import hamburgerImage from "../../assets/images/hamburgerDrawing.svg";
 import card1 from "../../assets/images/card1Chef.jpg";
 import card2 from "../../assets/images/meat.jpg";
 import card3 from "../../assets/images/ingredients.jpg";
+import { useContext, useEffect } from "react";
 const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.secondary,
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Home() {
+export function Home(props) {
   const cards = [
     {
       image: card1,
@@ -43,6 +44,7 @@ export function Home() {
     },
   ];
   const classes = useStyles();
+
   return (
     <div>
       {/* wellcome message */}

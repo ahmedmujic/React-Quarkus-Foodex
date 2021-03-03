@@ -42,8 +42,8 @@ public class CompanyServiceImpl implements CompanyService {
 
             CompanyDto companyDto = new CompanyDto();
             companyDto.setCompanyName(company.getCompanyName());
-            companyDto.setCompanyImage(companyDto.getCompanyImage());
-            companyDto.setCompanyLogo(companyDto.getCompanyLogo());
+            companyDto.setCompanyImage(company.getCompanyImage());
+            companyDto.setCompanyLogo(company.getCompanyLogo());
             companyDto.setLocation(company.getLocation());
             companyDto.setId(company.getId());
             companyDto.setScore(company.getScore());
@@ -60,7 +60,7 @@ public class CompanyServiceImpl implements CompanyService {
                     ImageDto imageDto = new ImageDto(images.imageUrl);
                     imageDtos.add(imageDto);
                 }
-
+ 
                 foodsDto.setImagesList(imageDtos);
                 foodsDto.setFoodCategory(ObjectMapperUtils.map(foodCompany.getFoodCategory(), CategoryDto.class));
                 foodsDtods.add(foodsDto);
