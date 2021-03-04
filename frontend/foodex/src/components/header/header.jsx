@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 export function Header(props) {
   return (
-    <AppBar position="static">
+    <AppBar position="static" className="navi">
       <Box ml={1}>
         <Toolbar>
           <Box display="flex" justifyContent="space-between" width="100%">

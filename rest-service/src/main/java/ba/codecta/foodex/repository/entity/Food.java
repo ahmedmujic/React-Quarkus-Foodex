@@ -10,6 +10,7 @@ import java.util.List;
 public class Food extends PanacheEntity {
 
     public String name;
+    private String description;
 
     @OneToMany(mappedBy = "foodImage", fetch = FetchType.LAZY)
     public List<Images> imagesList = new ArrayList<>();
@@ -19,6 +20,14 @@ public class Food extends PanacheEntity {
 
     @ManyToOne
     private FoodCategory foodCategory;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public FoodCategory getFoodCategory() {
         return foodCategory;

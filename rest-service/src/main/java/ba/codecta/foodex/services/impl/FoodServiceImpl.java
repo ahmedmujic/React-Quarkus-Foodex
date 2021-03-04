@@ -2,20 +2,21 @@ package ba.codecta.foodex.services.impl;
 
 import ba.codecta.foodex.helpers.ObjectMapperUtils;
 import ba.codecta.foodex.repository.CompanyRepository;
+import ba.codecta.foodex.repository.FoodCategoryRepository;
 import ba.codecta.foodex.repository.FoodRepository;
 import ba.codecta.foodex.repository.ImagesRepository;
 import ba.codecta.foodex.repository.entity.Company;
 import ba.codecta.foodex.repository.entity.Food;
 import ba.codecta.foodex.repository.entity.Images;
 import ba.codecta.foodex.services.FoodService;
+import ba.codecta.foodex.services.model.CategoryDto;
 import ba.codecta.foodex.services.model.FoodsDto;
 import ba.codecta.foodex.services.model.ImageDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 @Transactional
@@ -27,6 +28,9 @@ public class FoodServiceImpl implements FoodService {
 
     @Inject
     CompanyRepository companyRepository;
+
+    @Inject
+    FoodCategoryRepository foodCategoryRepository;
 
     @Inject
     ImagesRepository imagesRepository;
@@ -66,14 +70,15 @@ public class FoodServiceImpl implements FoodService {
 
     }*/
 
-    public boolean addFoodByCompanyId(FoodsDto foodsDto, Long id) {
+    public boolean addFoodByCompanyId(FoodsDto foodsDto, Integer id, Integer categoryId) {
 
         Company company = companyRepository.findById(id);
         if (company != null) {
             Food food = new Food();
             food.setCompany(company);
             food.setName(foodsDto.getName());
-
+            food.setDescription(foodsDto.getDescription());
+            food.setFoodCategory(foodCategoryRepository.getCategoryById(categoryId));
 
             for (ImageDto imageDto : foodsDto.getImagesList()) {
 
@@ -84,10 +89,16 @@ public class FoodServiceImpl implements FoodService {
                 food.getImagesList().add(images);
 
             }
+
             company.getFoods().add(food);
             foodRepository.persist(food);
             companyRepository.persist(company);
             return true;
         } else return false;
+    }
+
+    @Override
+    public List<CategoryDto> getAllFoodCategories() {
+        return ObjectMapperUtils.mapAll(foodCategoryRepository.listAll(), CategoryDto.class);
     }
 }

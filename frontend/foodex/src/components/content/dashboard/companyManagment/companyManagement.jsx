@@ -7,9 +7,13 @@ import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import BusinessIcon from "@material-ui/icons/Business";
 import { CompanyModal } from "../../modals/company";
+import { FoodModal } from "../../modals/food";
 import { makeStyles } from "@material-ui/core/styles";
 import { CompanyComponent } from "../../../companyComponent";
 import Grid from "@material-ui/core/Grid";
+import { Emitter } from "../../../../shared/Emitter";
+import FastfoodIcon from "@material-ui/icons/Fastfood";
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     transform: "translateZ(0px)",
@@ -37,10 +41,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function CompanyManagement() {
+  let history = useHistory();
   const classes = useStyles();
   const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
   const [companies, setCompanies] = useState();
   const [open, setOpen] = useState(false);
+  const [openFoodModal, setOpenFoodModal] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -51,11 +57,24 @@ export function CompanyManagement() {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  const handleOpenFoodModal = () => {
+    setOpenFoodModal(true);
+  };
+
+  const handleCloseFoodModal = () => {
+    setOpenFoodModal(false);
+  };
   const actions = [
     {
       icon: <BusinessIcon />,
       name: "Add company",
       action: handleOpenModal,
+    },
+    {
+      icon: <FastfoodIcon />,
+      name: "Add food to company",
+      action: handleOpenFoodModal,
     },
   ];
 
@@ -82,6 +101,7 @@ export function CompanyManagement() {
         }
       })
       .then((data) => {
+        Emitter.usersCompanies.next(data);
         setCompanies(data);
       });
   }
@@ -101,6 +121,7 @@ export function CompanyManagement() {
       })
       .then((data) => {
         console.log(data);
+        Emitter.usersCompanies.next(data);
         setCompanies(data);
       });
   }, []);
@@ -113,6 +134,14 @@ export function CompanyManagement() {
         handleCloseModal={handleCloseModal}
         updateData={updateData}
       ></CompanyModal>
+      <FoodModal
+        open={openFoodModal}
+        handleOpenModal={handleOpenFoodModal}
+        handleCloseModal={handleCloseFoodModal}
+        updateData={updateData}
+        companies={companies}
+      ></FoodModal>
+
       <SpeedDial
         ariaLabel="SpeedDial example"
         className={classes.speedDial}
@@ -140,8 +169,9 @@ export function CompanyManagement() {
           <Grid container spacing={3} direction="row">
             {companies.map((company) => {
               return (
-                <Grid item className="company-item">
+                <Grid key={company.id} item className="company-item">
                   <CompanyComponent
+                    id={company.id}
                     logoUrl={company.companyLogo}
                     companyName={company.companyName}
                     companyImage={company.companyImage}

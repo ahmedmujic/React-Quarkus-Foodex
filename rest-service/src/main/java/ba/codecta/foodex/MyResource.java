@@ -73,22 +73,31 @@ public class MyResource {
     }
 
     @POST
-    @Path("/food/add/{id}")
-    @PermitAll
+    @Path("/food/add/{id}/{categoryId}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addCompany(FoodsDto foodsDto, @PathParam("id") Long companyId, @Context UriInfo uriInfo) {
-        try {
-            boolean foodAdded = foodService.addFoodByCompanyId(foodsDto, companyId);
-            if (foodAdded) {
-                UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+    public Response addFood(FoodsDto foodsDto, @PathParam("id") Integer companyId, @PathParam("categoryId") Integer categoryId, @Context UriInfo uriInfo, @Context SecurityContext ctx) {
+        System.out.println("uslo u problem");
+        if (ctx.getUserPrincipal().getName().equals(jwt.getName())) {
+            try {
+                System.out.println("proslo");
+                boolean foodAdded = foodService.addFoodByCompanyId(foodsDto, companyId, categoryId );
+                System.out.println(foodAdded);
+                if (foodAdded) {
+                    UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 
-                return Response.ok(uriBuilder.build()).entity(foodAdded).build();
-            } else {
+                    return Response.ok(uriBuilder.build()).entity(foodAdded).build();
+                } else {
+                    System.out.println("else problem");
+                    return Response.status(Response.Status.BAD_REQUEST).build();
+                }
+            } catch (Exception e) {
+                System.out.println(e);
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
+
     }
 
     @POST
@@ -141,7 +150,7 @@ public class MyResource {
     @Path("/companies")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllFood(@Context UriInfo uriInfo,  @Context SecurityContext ctx) {
+    public Response getAllFood(@Context UriInfo uriInfo, @Context SecurityContext ctx) {
         System.out.println("Principal: " + ctx.getUserPrincipal().getName() + "jwt: " + jwt.getName());
         if (ctx.getUserPrincipal().getName().equals(jwt.getName())) {
             try {
@@ -167,6 +176,28 @@ public class MyResource {
     }
 
     @GET
+    @Path("/companies-all")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCompanies(@Context UriInfo uriInfo) {
+        try {
+
+            List<CompanyDto> allCompanies = companyService.getAllCompanies();
+            if (allCompanies != null) {
+
+                UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+
+                return Response.ok(uriBuilder.build()).entity(allCompanies).build();
+            } else {
+                System.out.println("uslo3");
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+    @GET
     @Path("/categories")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
@@ -174,6 +205,29 @@ public class MyResource {
         try {
 
             List<CategoryDto> allCategories = categoryService.listAllCategories();
+            if (allCategories != null) {
+
+                UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+
+                return Response.ok(uriBuilder.build()).entity(allCategories).build();
+            } else {
+                System.out.println("uslo3");
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
+    @Path("/food-categories")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllFoodCategories(@Context UriInfo uriInfo) {
+        try {
+
+            List<CategoryDto> allCategories = foodService.getAllFoodCategories();
             if (allCategories != null) {
 
                 UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();

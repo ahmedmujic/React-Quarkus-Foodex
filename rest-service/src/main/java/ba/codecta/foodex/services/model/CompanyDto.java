@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyDto {
-    private Long id;
+    private Integer id;
     private String companyName;
     private Double score;
     private String location;
@@ -25,11 +25,11 @@ public class CompanyDto {
         return companyName;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

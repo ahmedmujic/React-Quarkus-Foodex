@@ -2,6 +2,7 @@ package ba.codecta.foodex.services.impl;
 
 import ba.codecta.foodex.helpers.ObjectMapperUtils;
 import ba.codecta.foodex.repository.CompanyRepository;
+import ba.codecta.foodex.repository.FoodCategoryRepository;
 import ba.codecta.foodex.repository.UserRepository;
 import ba.codecta.foodex.repository.entity.Company;
 import ba.codecta.foodex.repository.entity.Food;
@@ -31,6 +32,60 @@ public class CompanyServiceImpl implements CompanyService {
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    FoodCategoryRepository foodCategoryRepository;
+
+    @Override
+    public List<CompanyDto> getAllCompanies() {
+        List<Company> companies = companyRepository.listAll();
+        List<CompanyDto> companyDtos = new ArrayList<>();
+
+        for (Company company : companies) {
+
+            CompanyDto companyDto = new CompanyDto();
+            companyDto.setCompanyName(company.getCompanyName());
+            companyDto.setCompanyImage(company.getCompanyImage());
+            companyDto.setCompanyLogo(company.getCompanyLogo());
+            companyDto.setLocation(company.getLocation());
+            companyDto.setId(company.getId());
+            companyDto.setScore(company.getScore());
+            companyDto.setCategory(company.getCategory());
+
+            System.out.println("jedan");
+            List<FoodsDto> foodsDtods = new ArrayList<>();
+            for (Food foodCompany : company.getFoods()) {
+                System.out.println("dva");
+                FoodsDto foodsDto = new FoodsDto();
+                System.out.println("tri");
+                List<ImageDto> imageDtos = new ArrayList<>();
+                System.out.println("cetri");
+                foodsDto.setName(foodCompany.getName());
+                foodsDto.setDescription(foodCompany.getDescription());
+                for (Images images : foodCompany.getImagesList()) {
+                    System.out.println("pet");
+                    ImageDto imageDto = new ImageDto(images.getImageUrl());
+
+                    System.out.println("sest");
+                    imageDtos.add(imageDto);
+                }
+                System.out.println("sedam");
+                foodsDto.setImagesList(imageDtos);
+                System.out.println("osam");
+                foodsDto.setFoodCategory(ObjectMapperUtils.map(foodCompany.getFoodCategory(), CategoryDto.class));
+                System.out.println("devet");
+                foodsDtods.add(foodsDto);
+            }
+
+            System.out.println("deset");
+            companyDto.getFoods().addAll(foodsDtods);
+            System.out.println("jedanaest");
+            companyDtos.add(companyDto);
+
+        }
+
+        return companyDtos;
+    }
+
     @Override
     public List<CompanyDto> getAllCompaniesByUserEmail(String email) {
         UserEntity user = userRepository.findByEmail(email);
@@ -49,24 +104,33 @@ public class CompanyServiceImpl implements CompanyService {
             companyDto.setScore(company.getScore());
             companyDto.setCategory(company.getCategory());
 
+            System.out.println("jedan");
             List<FoodsDto> foodsDtods = new ArrayList<>();
             for (Food foodCompany : company.getFoods()) {
+                System.out.println("dva");
                 FoodsDto foodsDto = new FoodsDto();
-
+                System.out.println("tri");
                 List<ImageDto> imageDtos = new ArrayList<>();
-
+                System.out.println("cetri");
                 foodsDto.setName(foodCompany.getName());
-                for (Images images : foodCompany.imagesList) {
-                    ImageDto imageDto = new ImageDto(images.imageUrl);
+                for (Images images : foodCompany.getImagesList()) {
+                    System.out.println("pet");
+                    ImageDto imageDto = new ImageDto(images.getImageUrl());
+
+                    System.out.println("sest");
                     imageDtos.add(imageDto);
                 }
- 
+                System.out.println("sedam");
                 foodsDto.setImagesList(imageDtos);
+                System.out.println("osam");
                 foodsDto.setFoodCategory(ObjectMapperUtils.map(foodCompany.getFoodCategory(), CategoryDto.class));
+                System.out.println("devet");
                 foodsDtods.add(foodsDto);
             }
 
+            System.out.println("deset");
             companyDto.getFoods().addAll(foodsDtods);
+            System.out.println("jedanaest");
             companyDtos.add(companyDto);
 
         }

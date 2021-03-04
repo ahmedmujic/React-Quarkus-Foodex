@@ -15,6 +15,8 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
 
@@ -42,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function CompanyComponent(props) {
+  let history = useHistory();
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -51,20 +54,17 @@ export function CompanyComponent(props) {
 
   return (
     <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe">
-            <img src={props.logoUrl} alt="Not available"></img>
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={props.companyName}
-        subheader="September 14, 2016"
-      />
+      <Link to={`/dashboard/company/${props.id}`}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe">
+              <img src={props.logoUrl} alt="Not available"></img>
+            </Avatar>
+          }
+          title={props.companyName}
+          subheader="September 14, 2016"
+        />
+      </Link>
       <CardMedia className={classes.media} image={props.companyImage} />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -74,12 +74,6 @@ export function CompanyComponent(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -97,10 +91,7 @@ export function CompanyComponent(props) {
             title="Company location"
             width="100%"
             height="300"
-            frameborder="0"
             scrolling="no"
-            marginheight="0"
-            marginwidth="0"
             src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=44.22630834795185,17.90993408282895+(Almy)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
           ></iframe>
           <a href="https://www.maps.ie/route-planner.htm">Road Trip Planner</a>
