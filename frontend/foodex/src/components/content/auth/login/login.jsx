@@ -96,6 +96,7 @@ export function Login() {
           if (data != null || data != undefined) {
             var user = new User(data.id, data.email, data.username);
             usersService.setUser(user);
+            usersService.user.next(usersService.getUser());
             setCookie("userToken", data.token, { path: "/" });
             history.push("/dashboard");
           }
@@ -171,10 +172,7 @@ export function Login() {
                 onChange={(event) => setPassword(event.target.value)}
               />
             )}
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+
             <Button
               type="submit"
               fullWidth
@@ -185,11 +183,6 @@ export function Login() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link to="/auth/register" variant="body2">
                   {"Don't have an account? Sign Up"}

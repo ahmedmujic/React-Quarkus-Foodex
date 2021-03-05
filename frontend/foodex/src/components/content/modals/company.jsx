@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
     paddingBlock: 50,
   },
+  location: {
+    width: "50%",
+  },
 }));
 const mapStyles = {
   width: "100%",
@@ -118,7 +121,7 @@ export function CompanyModal(props) {
         }}
       >
         <Fade in={props.open}>
-          <Container component="main" maxWidth="xs">
+          <Container component="main" maxWidth="sm">
             <CssBaseline />
             <div className={classes.paper}>
               <Avatar className={classes.avatar}>
@@ -142,26 +145,31 @@ export function CompanyModal(props) {
                   margin="normal"
                   onChange={(event) => setCompanyName(event.target.value)}
                 />
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  label="Company Latitude"
-                  name="companyLatitudeLocation"
-                  margin="normal"
-                  onChange={(event) => setCompanyLatitude(event.target.value)}
-                />
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  label="Company Longitude"
-                  name="companyLongitudeLocation"
-                  margin="normal"
-                  onChange={(event) => setCompanyLongitude(event.target.value)}
-                />
+                <div>
+                  <TextField
+                    variant="outlined"
+                    required
+                    label="Company Latitude"
+                    className={classes.location}
+                    name="companyLatitudeLocation"
+                    margin="normal"
+                    onChange={(event) => setCompanyLatitude(event.target.value)}
+                  />
+                  <TextField
+                    variant="outlined"
+                    required
+                    className={classes.location}
+                    label="Company Longitude"
+                    name="companyLongitudeLocation"
+                    margin="normal"
+                    onChange={(event) =>
+                      setCompanyLongitude(event.target.value)
+                    }
+                  />
+                </div>
+
                 <Editor
-                  initialValue="<p>This is the initial content of the editor</p>"
+                  initialValue="<p>Describe your company</p>"
                   init={{
                     height: 200,
                     menubar: false,

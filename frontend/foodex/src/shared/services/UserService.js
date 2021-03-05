@@ -34,6 +34,10 @@ class UserService {
     };
     return fetch("http://localhost:8080/api/auth/register", requestOptions);
   }
+  logout() {
+    localStorage.removeItem("user");
+    this.user.next(undefined);
+  }
 }
 
 export const usersService = new UserService();

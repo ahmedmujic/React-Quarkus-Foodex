@@ -25,9 +25,9 @@ import { Editor } from "@tinymce/tinymce-react";
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "end",
     justifyContent: "center",
-    width: "800px",
+    height: "100%",
   },
   avatar: {
     color: theme.palette.secondary.main,
@@ -115,124 +115,120 @@ export function FoodModal(props) {
       });
   }
   return (
-    <div style={{ width: "700px" }}>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={props.open}
-        onClose={props.handleCloseModal}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={props.open}>
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
-                <FastfoodIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Add food
-              </Typography>
-              <form
-                className={classes.form}
-                onSubmit={(event) => {
-                  addFoodSubmit(event);
-                }}
-              >
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  label="Food Name"
-                  name="foodName"
-                  margin="normal"
-                  onChange={(event) => setFoodName(event.target.value)}
-                />
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">
-                    Categories
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={selectedCategory}
-                    onChange={(event) => {
-                      setSelectedCategory(event.target.value);
-                    }}
-                  >
-                    {category?.map((category) => {
-                      return (
-                        <MenuItem value={category.id} key={category.id}>
-                          {category.category}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">
-                    Companies
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={selectedCompany}
-                    onChange={(event) => {
-                      setSelectedCompany(event.target.value);
-                    }}
-                  >
-                    {props.companies?.map((company) => {
-                      return (
-                        <MenuItem value={company.id} key={company.id}>
-                          {company.companyName}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-                <FormControl className={classes.formControl}>
-                  <Editor
-                    initialValue="<p>This is the initial content of the editor</p>"
-                    init={{
-                      height: 200,
-                      menubar: false,
-                      plugins: [
-                        "advlist autolink lists link image charmap print preview anchor",
-                        "searchreplace visualblocks code fullscreen",
-                        "insertdatetime media table paste code help wordcount",
-                      ],
-                      toolbar:
-                        "undo redo | formatselect | bold italic backcolor | \
+    <Modal
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      className={classes.modal}
+      open={props.open}
+      onClose={props.handleCloseModal}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={props.open}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <FastfoodIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Add food
+            </Typography>
+            <form
+              className={classes.form}
+              onSubmit={(event) => {
+                addFoodSubmit(event);
+              }}
+            >
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                label="Food Name"
+                name="foodName"
+                margin="normal"
+                onChange={(event) => setFoodName(event.target.value)}
+              />
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-label">
+                  Categories
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedCategory}
+                  onChange={(event) => {
+                    setSelectedCategory(event.target.value);
+                  }}
+                >
+                  {category?.map((category) => {
+                    return (
+                      <MenuItem value={category.id} key={category.id}>
+                        {category.category}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-label">Companies</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedCompany}
+                  onChange={(event) => {
+                    setSelectedCompany(event.target.value);
+                  }}
+                >
+                  {props.companies?.map((company) => {
+                    return (
+                      <MenuItem value={company.id} key={company.id}>
+                        {company.companyName}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <FormControl className={classes.formControl}>
+                <Editor
+                  initialValue="<p>Describe this food</p>"
+                  init={{
+                    height: 200,
+                    menubar: false,
+                    plugins: [
+                      "advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code fullscreen",
+                      "insertdatetime media table paste code help wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | formatselect | bold italic backcolor | \
              alignleft aligncenter alignright alignjustify | \
              bullist numlist outdent indent | removeformat | help",
-                    }}
-                    onEditorChange={handleEditorChange}
-                  />
-                </FormControl>
-                <UppyComponent
-                  config={config}
-                  onFileUploadCompleted={handleFoodImagesUpload}
-                ></UppyComponent>
+                  }}
+                  onEditorChange={handleEditorChange}
+                />
+              </FormControl>
+              <UppyComponent
+                config={config}
+                onFileUploadCompleted={handleFoodImagesUpload}
+              ></UppyComponent>
 
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Add Food
-                </Button>
-              </form>
-            </div>
-          </Container>
-        </Fade>
-      </Modal>
-    </div>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Add Food
+              </Button>
+            </form>
+          </div>
+        </Container>
+      </Fade>
+    </Modal>
   );
 }

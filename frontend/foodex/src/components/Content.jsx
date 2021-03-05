@@ -11,13 +11,6 @@ import { CompanyInfo } from "./companyInfo";
 export function Content() {
   let history = useHistory();
 
-  function getAllCompanies() {
-    /*.then((data) => {
-        console.log(data);
-        Emitter.companies.next(data);
-      });*/
-  }
-
   useEffect(() => {}, []);
   return (
     <div>

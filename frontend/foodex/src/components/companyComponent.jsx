@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 350,
     minWidth: 350,
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   media: {
     height: 0,
@@ -42,28 +46,45 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  avatarImage: {
+    width: "40px",
+    height: "40px",
+  },
 }));
 
 export function CompanyComponent(props) {
   let history = useHistory();
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
+  const [mapLink, setMapLink] = useState();
 
   const handleExpandClick = () => {
+    console.log(mapLink);
+    console.log(props.companyLocation);
+
+    console.log(mapLink);
     setExpanded(!expanded);
   };
 
+  useEffect(() => {
+    setMapLink(
+      `https://maps.google.com/maps?q=${props.companyLocation}&z=15&output=embed`
+    );
+  }, []);
   return (
     <Card className={classes.root}>
       <Link to={`/company/${props.id}`}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
-              <img src={props.logoUrl} alt="Not available"></img>
+              <img
+                src={props.logoUrl}
+                alt="Not available"
+                className={classes.avatarImage}
+              ></img>
             </Avatar>
           }
           title={props.companyName}
-          subheader="September 14, 2016"
         />
       </Link>
       <CardMedia className={classes.media} image={props.companyImage} />
@@ -87,14 +108,20 @@ export function CompanyComponent(props) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <iframe
-            title="Company location"
-            width="100%"
-            height="300"
-            scrolling="no"
-            src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=44.22630834795185,17.90993408282895+(Almy)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-          ></iframe>
-          <a href="https://www.maps.ie/route-planner.htm">Road Trip Planner</a>
+          {mapLink != null || mapLink != undefined ? (
+            <div>
+              <iframe
+                title="Company location"
+                width="100%"
+                height="300"
+                scrolling="no"
+                src={mapLink}
+              ></iframe>
+              <a href="https://www.maps.ie/route-planner.htm">
+                Road Trip Planner
+              </a>
+            </div>
+          ) : null}
 
           {/* <iframe
             title="Company Location"

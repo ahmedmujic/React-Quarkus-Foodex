@@ -22,7 +22,7 @@ export function CompaniesList() {
         className="foodBanner"
       ></div>
       <div className="company-container">
-        <Grid container spacing={3} direction="row">
+        <Grid container spacing={3} direction="row" style={{ height: "100%" }}>
           {companies?.map((company) => {
             return (
               <Grid key={company.id} item>

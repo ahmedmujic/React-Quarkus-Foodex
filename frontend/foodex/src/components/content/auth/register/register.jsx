@@ -234,14 +234,6 @@ export function Register() {
                   />
                 )}
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I agree with terms and conditions"
-                />
-              </Grid>
             </Grid>
 
             <Button

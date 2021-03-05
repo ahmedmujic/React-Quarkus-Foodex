@@ -43,7 +43,7 @@ export function CompanyInfo(props) {
         className="banner d-flex justify-content-center"
         style={{ backgroundImage: `url(${selectedCompany?.companyImage})` }}
       ></div>
-      <div style={{ backgroundImage: `url(${patternImage})` }}>
+      <div>
         <div className="row">
           <div className="col-12  m-5 ">
             <div className="mt-2 pt-5">
@@ -72,7 +72,7 @@ export function CompanyInfo(props) {
                         </Swiper>
                       </div>
                       <div className="col-6">
-                        <h1 className="shadow text-white">{food.name}</h1>
+                        <h1>{food.name}</h1>
                         <div>
                           <img
                             src={food.foodCategory.categoryImageUrl}
@@ -80,7 +80,7 @@ export function CompanyInfo(props) {
                             alt="category img"
                           ></img>
                           <div
-                            className="pt-3 text-white shadow"
+                            className="pt-3"
                             dangerouslySetInnerHTML={{
                               __html: food.description,
                             }}

@@ -19,3 +19,9 @@ values(1, 'Grill', 'https://res.cloudinary.com/dcedcuwsu/image/upload/v161484503
 
 INSERT INTO FoodEx.foodcategory(id,category,categoryimageurl)
 values(2, 'Pizza', 'https://res.cloudinary.com/dcedcuwsu/image/upload/v1614841395/hzofbdobcryw3p99x2yi.png');
+
+INSERT INTO FoodEx.foodcategory(id,category,categoryimageurl)
+values(3, 'Vegan', 'https://res.cloudinary.com/dcedcuwsu/image/upload/v1614949611/yndj5sckmdl2z7sflrxs.png');
+
+INSERT INTO FoodEx.foodcategory(id,category,categoryimageurl)
+values(4, 'Pasta', 'https://res.cloudinary.com/dcedcuwsu/image/upload/v1614949608/euqjtspjhulyo7eggdgq.png');

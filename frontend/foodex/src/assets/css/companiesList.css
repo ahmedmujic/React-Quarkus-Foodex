@@ -6,3 +6,9 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+.cardGrid {
+  height: 100% !important;
+}
+.cardGridItem {
+  max-height: 550px;
+}
