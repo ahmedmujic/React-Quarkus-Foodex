@@ -7,13 +7,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+
 import Container from "@material-ui/core/Container";
-import BusinessIcon from "@material-ui/icons/Business";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
+
 import { UppyComponent } from "./../../uppy";
 import { useCookies } from "react-cookie";
 import { Emitter } from "../../../shared/Emitter";
@@ -23,13 +20,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import { Config } from "../../../shared/uppy-config";
 import FormControl from "@material-ui/core/FormControl";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import { Editor } from "@tinymce/tinymce-react";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    width: "800px",
   },
   avatar: {
     color: theme.palette.secondary.main,
@@ -55,21 +53,28 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    width: "500px",
   },
+  modal: {},
 }));
 
 export function FoodModal(props) {
   const classes = useStyles();
   const [foodName, setFoodName] = useState("");
   const [foodImages, setFoodImages] = useState("");
-  const [foodDescription, setFoodDescription] = useState("");
+  const [foodDescription, setFoodDescription] = useState();
   const [category, setCategory] = useState();
   const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedCompany, setSelectedCompany] = useState();
+  function handleEditorChange(content, editor) {
+    setFoodDescription(content);
+    console.log("Content was updated:", content);
+  }
   var config = Config(
     "Upload your company logo",
     1,
@@ -124,7 +129,7 @@ export function FoodModal(props) {
       });
   }
   return (
-    <div>
+    <div style={{ width: "700px" }}>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -205,14 +210,23 @@ export function FoodModal(props) {
                   </Select>
                 </FormControl>
                 <FormControl className={classes.formControl}>
-                  <textarea
-                    className="form-control textareaR"
-                    id="exampleFormControlTextarea1"
-                    rows="3"
-                    onChange={(event) => {
-                      setFoodDescription(event.target.value);
+                  <Editor
+                    initialValue="<p>This is the initial content of the editor</p>"
+                    init={{
+                      height: 200,
+                      menubar: false,
+                      plugins: [
+                        "advlist autolink lists link image charmap print preview anchor",
+                        "searchreplace visualblocks code fullscreen",
+                        "insertdatetime media table paste code help wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | formatselect | bold italic backcolor | \
+             alignleft aligncenter alignright alignjustify | \
+             bullist numlist outdent indent | removeformat | help",
                     }}
-                  ></textarea>
+                    onEditorChange={handleEditorChange}
+                  />
                 </FormControl>
                 <UppyComponent
                   config={config}

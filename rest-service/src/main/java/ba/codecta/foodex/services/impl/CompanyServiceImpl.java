@@ -47,6 +47,7 @@ public class CompanyServiceImpl implements CompanyService {
             companyDto.setCompanyImage(company.getCompanyImage());
             companyDto.setCompanyLogo(company.getCompanyLogo());
             companyDto.setLocation(company.getLocation());
+            companyDto.setDescription(company.getDescription());
             companyDto.setId(company.getId());
             companyDto.setScore(company.getScore());
             companyDto.setCategory(company.getCategory());
@@ -100,6 +101,7 @@ public class CompanyServiceImpl implements CompanyService {
             companyDto.setCompanyImage(company.getCompanyImage());
             companyDto.setCompanyLogo(company.getCompanyLogo());
             companyDto.setLocation(company.getLocation());
+            companyDto.setDescription(company.getDescription());
             companyDto.setId(company.getId());
             companyDto.setScore(company.getScore());
             companyDto.setCategory(company.getCategory());

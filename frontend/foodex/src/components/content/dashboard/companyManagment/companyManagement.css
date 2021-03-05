@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: -1;
 }
 .index {
   z-index: 300;
@@ -16,4 +17,7 @@
   cursor: pointer;
   flex-grow: 1;
   margin: 100px;
+}
+.company-item {
+  min-width: 100px;
 }

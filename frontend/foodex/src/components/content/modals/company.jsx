@@ -16,7 +16,7 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import { UppyComponent } from "./../../uppy";
 import { useCookies } from "react-cookie";
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { Editor } from "@tinymce/tinymce-react";
 
 import { Config } from "../../../shared/uppy-config";
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    paddingBlock: 50,
   },
 }));
 const mapStyles = {
@@ -57,8 +58,13 @@ export function CompanyModal(props) {
   const [companyLongitudeLocation, setCompanyLongitude] = useState("");
   const [companyLogo, setCompanyLogo] = useState("");
   const [companyImage, setCompanyImage] = useState("");
+  const [companyDescription, setCompanyDescription] = useState();
   const [companyCategory, setCompanyCategory] = useState(1);
   const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
+
+  function handleEditorChange(content, editor) {
+    setCompanyDescription(content);
+  }
 
   var config = Config(
     "Upload your company logo",
@@ -90,6 +96,7 @@ export function CompanyModal(props) {
         location: companyLatitudeLocation + "," + companyLongitudeLocation,
         companyLogo: companyLogo,
         companyImage: companyImage,
+        description: companyDescription,
       }),
     };
     fetch("http://localhost:8080/api/companies/add", requestOptions)
@@ -161,14 +168,35 @@ export function CompanyModal(props) {
                   margin="normal"
                   onChange={(event) => setCompanyLongitude(event.target.value)}
                 />
-                <UppyComponent
-                  config={config}
-                  onFileUploadCompleted={handleIconUpload}
-                ></UppyComponent>
-                <UppyComponent
-                  config={config}
-                  onFileUploadCompleted={handlePictureUpload}
-                ></UppyComponent>
+                <Editor
+                  initialValue="<p>This is the initial content of the editor</p>"
+                  init={{
+                    height: 200,
+                    menubar: false,
+                    plugins: [
+                      "advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code fullscreen",
+                      "insertdatetime media table paste code help wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | formatselect | bold italic backcolor | \
+             alignleft aligncenter alignright alignjustify | \
+             bullist numlist outdent indent | removeformat | help",
+                  }}
+                  onEditorChange={handleEditorChange}
+                />
+                <div className="row">
+                  <UppyComponent
+                    config={config}
+                    onFileUploadCompleted={handleIconUpload}
+                  ></UppyComponent>
+
+                  <UppyComponent
+                    config={config}
+                    onFileUploadCompleted={handlePictureUpload}
+                  ></UppyComponent>
+                </div>
+
                 <Button
                   type="submit"
                   fullWidth

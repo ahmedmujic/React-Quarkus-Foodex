@@ -169,8 +169,9 @@ export function CompanyManagement() {
           <Grid container spacing={3} direction="row">
             {companies.map((company) => {
               return (
-                <Grid key={company.id} item className="company-item">
+                <Grid key={company.id} item>
                   <CompanyComponent
+                    description={company.description}
                     id={company.id}
                     logoUrl={company.companyLogo}
                     companyName={company.companyName}

@@ -16,6 +16,7 @@ public class CompanyDto {
     private Double score;
     private String location;
     private String companyLogo;
+    private String description;
     private String companyImage;
     private CompanyCategory category;
 
@@ -39,6 +40,14 @@ public class CompanyDto {
 
     public Double getScore() {
         return score;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setScore(Double score) {

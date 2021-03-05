@@ -16,7 +16,7 @@ import Container from "@material-ui/core/Container";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { User } from "../../../../shared/models/User";
-import { Emitter } from "../../../../shared/Emitter";
+import { usersService } from "../../../../shared/UserService";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +101,7 @@ export function Login() {
         })
         .then((data) => {
           var user = new User(data.id, data.email, data.username);
-          Emitter.user.next(user);
+          usersService.setUser(user);
           setCookie("userToken", data.token, { path: "/" });
           history.push("/dashboard");
         });

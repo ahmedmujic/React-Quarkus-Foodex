@@ -42,3 +42,6 @@ body {
 .navi {
   z-index: 500;
 }
+.pointerHover {
+  cursor: pointer;
+}

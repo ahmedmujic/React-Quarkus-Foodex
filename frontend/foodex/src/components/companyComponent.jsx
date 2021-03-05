@@ -22,7 +22,8 @@ import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 400,
+    maxWidth: 350,
+    minWidth: 350,
   },
   media: {
     height: 0,
@@ -54,7 +55,7 @@ export function CompanyComponent(props) {
 
   return (
     <Card className={classes.root}>
-      <Link to={`/dashboard/company/${props.id}`}>
+      <a href={`/dashboard/company/${props.id}`}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
@@ -64,14 +65,13 @@ export function CompanyComponent(props) {
           title={props.companyName}
           subheader="September 14, 2016"
         />
-      </Link>
+      </a>
       <CardMedia className={classes.media} image={props.companyImage} />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
+        <div
+          className="pt-3"
+          dangerouslySetInnerHTML={{ __html: props.description }}
+        ></div>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton

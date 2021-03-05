@@ -20,6 +20,7 @@ public class Company extends PanacheEntityBase {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    private String description;
     private String companyName;
     private Double score;
     private String location;
@@ -39,6 +40,14 @@ public class Company extends PanacheEntityBase {
 
     public Double getScore() {
         return score;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setScore(Double score) {
