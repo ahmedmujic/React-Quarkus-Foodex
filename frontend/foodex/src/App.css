@@ -45,3 +45,18 @@ body {
 .pointerHover {
   cursor: pointer;
 }
+body {
+  overflow-x: hidden;
+}
+.linkDecor {
+  text-decoration: none;
+  color: inherit;
+}
+.linkDecor:hover {
+  text-decoration: none;
+  color: inherit;
+}
+.linkDecor:active {
+  text-decoration: none;
+  color: inherit;
+}

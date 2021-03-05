@@ -10,6 +10,7 @@ import java.util.List;
 public class Food extends PanacheEntity {
 
     public String name;
+    @Column(columnDefinition="TEXT")
     private String description;
 
     @OneToMany(mappedBy = "foodImage", fetch = FetchType.LAZY)

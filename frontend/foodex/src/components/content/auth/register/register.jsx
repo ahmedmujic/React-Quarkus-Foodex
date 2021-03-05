@@ -15,6 +15,7 @@ import Container from "@material-ui/core/Container";
 import { useState } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import { usersService } from "../../../../shared/services/UserService";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -101,27 +102,16 @@ export function Register() {
     e.preventDefault();
 
     if (validateForm()) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          name: username,
-        }),
-      };
-      fetch("http://localhost:8080/api/auth/register", requestOptions).then(
-        (response) => {
-          if (response.status === 200) {
-            history.push("/auth/login");
-          } else if (response.status === 409) {
-            setOpen(true);
-            setErrorMessage("User already exists");
-          } else {
-            setErrorMessage("Server error");
-          }
+      usersService.register(email, password, username).then((response) => {
+        if (response.status === 200) {
+          history.push("/auth/login");
+        } else if (response.status === 409) {
+          setOpen(true);
+          setErrorMessage("User already exists");
+        } else {
+          setErrorMessage("Server error");
         }
-      );
+      });
     }
   }
 

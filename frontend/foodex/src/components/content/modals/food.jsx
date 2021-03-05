@@ -10,10 +10,10 @@ import TextField from "@material-ui/core/TextField";
 
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-
+import { categoriesService } from "../../../shared/services/CategoriesService";
 import { UppyComponent } from "./../../uppy";
 import { useCookies } from "react-cookie";
-import { Emitter } from "../../../shared/Emitter";
+import { foodService } from "../../../shared/services/FoodService";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -91,38 +91,24 @@ export function FoodModal(props) {
     setSelectedCategory(id);
   }
   useEffect(() => {
-    Emitter.categories.subscribe((categories) => {
-      console.log(categories);
+    categoriesService.getAllCategories().then((categories) => {
       setCategory(categories);
     });
   }, []);
   function addFoodSubmit(e) {
     e.stopPropagation();
     e.preventDefault();
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookies.userToken}`,
-      },
-      body: JSON.stringify({
-        name: foodName,
-        imagesList: foodImages,
-        foodCategoryId: selectedCategory,
-        description: foodDescription,
-      }),
-    };
-    fetch(
-      `http://localhost:8080/api/food/add/${selectedCompany}/${selectedCategory}`,
-      requestOptions
-    )
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      })
+
+    foodService
+      .addFood(
+        foodName,
+        selectedCategory,
+        foodImages,
+        foodDescription,
+        cookies.userToken,
+        selectedCompany
+      )
       .then((data) => {
-        console.log("proslo uslo");
         console.log(data);
         props.updateData();
         props.handleCloseModal();

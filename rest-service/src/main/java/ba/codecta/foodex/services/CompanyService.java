@@ -11,4 +11,5 @@ public interface CompanyService {
     CompanyDto addCompany(CompanyDto companyDto, String userEmail);
     boolean editCompany(CompanyDto companyDto);
     List<CompanyDto> getAllCompanies();
+    CompanyDto getCompanyByCompanyId(Integer id);
 }

@@ -184,4 +184,37 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.persist(company);
         return true;
     }
+
+    @Override
+    public CompanyDto getCompanyByCompanyId(Integer id) {
+        CompanyDto companyDto = new CompanyDto();
+        Company company = companyRepository.getCompanyById(id);
+        companyDto.setId(company.getId());
+        companyDto.setCompanyName(company.getCompanyName());
+        companyDto.setCompanyImage(company.getCompanyImage());
+        companyDto.setCompanyLogo(company.getCompanyLogo());
+        companyDto.setLocation(company.getLocation());
+        companyDto.setScore(company.getScore());
+        companyDto.setCategory(company.getCategory());
+
+        List<FoodsDto> foods = new ArrayList<>();
+        for (Food foodCompany : company.getFoods()) {
+            FoodsDto foodsDto = new FoodsDto();
+
+            List<ImageDto> imagesDtos= new ArrayList<>();
+
+            foodsDto.setName(foodCompany.getName());
+            foodsDto.setDescription(foodCompany.getDescription());
+            foodsDto.setFoodCategory(ObjectMapperUtils.map(foodCompany.getFoodCategory(), CategoryDto.class));
+            foodsDto.setImagesList(ObjectMapperUtils.mapAll(foodCompany.getImagesList(), ImageDto.class));
+            for (Images images : foodCompany.getImagesList()) {
+                ImageDto image = new ImageDto(images.getImageUrl());
+
+                imagesDtos.add(image);
+            }
+            foods.add(foodsDto);
+        }
+        companyDto.setFoods(foods);
+        return companyDto;
+    }
 }

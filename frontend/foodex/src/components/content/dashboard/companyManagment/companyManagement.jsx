@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import "./companyManagement.css";
+import "../../../../assets/css/companyManagement.css";
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CompanyComponent } from "../../../companyComponent";
 import Grid from "@material-ui/core/Grid";
 import { Emitter } from "../../../../shared/Emitter";
+import { companyService } from "../../../../shared/services/CompanyService";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
 import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
@@ -87,43 +88,17 @@ export function CompanyManagement() {
   };
 
   function updateData() {
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookies.userToken}`,
-      },
-    };
-    fetch("http://127.0.0.1:8080/api/companies", requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        Emitter.usersCompanies.next(data);
-        setCompanies(data);
-      });
+    companyService.getUserCompanies(cookies.userToken).then((data) => {
+      Emitter.usersCompanies.next(data);
+      setCompanies(data);
+    });
   }
   useEffect(() => {
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookies.userToken}`,
-      },
-    };
-    fetch("http://127.0.0.1:8080/api/companies", requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        Emitter.usersCompanies.next(data);
-        setCompanies(data);
-      });
+    companyService.getUserCompanies(cookies.userToken).then((data) => {
+      console.log(data);
+      Emitter.usersCompanies.next(data);
+      setCompanies(data);
+    });
   }, []);
 
   return (

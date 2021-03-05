@@ -16,7 +16,7 @@ import Container from "@material-ui/core/Container";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { User } from "../../../../shared/models/User";
-import { usersService } from "../../../../shared/UserService";
+import { usersService } from "../../../../shared/services/UserService";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
@@ -79,31 +79,26 @@ export function Login() {
     e.stopPropagation();
     e.preventDefault();
     if (validateForm()) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      };
-      fetch("http://localhost:8080/api/auth/login", requestOptions)
+      usersService
+        .login(email, password)
         .then((response) => {
           if (response.status === 200) {
             return response.json();
           } else if (response.status === 401) {
             setOpen(true);
-            setErrorMessage("Wrong email or password");
+            return setErrorMessage("Wrong email or password");
           } else {
             setOpen(true);
-            setErrorMessage("Internal server error");
+            return setErrorMessage("Internal server error");
           }
         })
         .then((data) => {
-          var user = new User(data.id, data.email, data.username);
-          usersService.setUser(user);
-          setCookie("userToken", data.token, { path: "/" });
-          history.push("/dashboard");
+          if (data != null || data != undefined) {
+            var user = new User(data.id, data.email, data.username);
+            usersService.setUser(user);
+            setCookie("userToken", data.token, { path: "/" });
+            history.push("/dashboard");
+          }
         });
     }
   }

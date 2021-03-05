@@ -174,6 +174,31 @@ public class MyResource {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
+    @GET
+    @Path("/company/{id}")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCompanyInfo(@Context UriInfo uriInfo,@PathParam("id") Integer companyId, @Context SecurityContext ctx) {
+
+            try {
+
+                CompanyDto company = companyService.getCompanyByCompanyId(companyId);
+
+                if (company != null) {
+
+                    UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+
+                    return Response.ok(uriBuilder.build()).entity(company).build();
+                } else {
+
+                    return Response.status(Response.Status.BAD_REQUEST).build();
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+
+    }
 
     @GET
     @Path("/companies-all")

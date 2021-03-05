@@ -10,4 +10,8 @@ import javax.transaction.Transactional;
 @ApplicationScoped
 @Transactional(Transactional.TxType.MANDATORY)
 public class CompanyRepository implements PanacheRepositoryBase<Company, Integer> {
+
+    public Company getCompanyById(Integer id){
+        return findById(id);
+    }
 }

@@ -1,14 +1,17 @@
 .banner {
   width: 100wv;
   height: 55vh;
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* Create the parallax scrolling effect */
+
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  backdrop-filter: brightness(180%);
 }
 .company-info {
   width: 70%;
+}
+.shadow {
+  text-shadow: 2px 2px 6px black;
+  font-weight: bold;
 }

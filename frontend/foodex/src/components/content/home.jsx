@@ -9,13 +9,14 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import "./home.css";
-
+import "../../assets/css/home.css";
+import { Link } from "react-router-dom";
 import hamburgerImage from "../../assets/images/hamburgerDrawing.svg";
 import card1 from "../../assets/images/card1Chef.jpg";
 import card2 from "../../assets/images/meat.jpg";
 import card3 from "../../assets/images/ingredients.jpg";
 import { useContext, useEffect } from "react";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.secondary,
@@ -29,18 +30,21 @@ export function Home(props) {
   const cards = [
     {
       image: card1,
-      title: "Neki title",
-      description: "Description",
+      title: "Lorem, ipsum dolo1.",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, quisquam.",
     },
     {
       image: card2,
-      title: "Neki title",
-      description: "Description",
+      title: "Lorem, ipsum dolor2.",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, quisquam.",
     },
     {
       image: card3,
-      title: "Neki title",
-      description: "Description",
+      title: "Lorem, ipsum dolo3.",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, quisquam.",
     },
   ];
   const classes = useStyles();
@@ -57,7 +61,6 @@ export function Home(props) {
             sd={12}
             xs={12}
             className="d-flex justify-content-center align-items-center"
-            direction="column"
           >
             <Box>
               <Box
@@ -72,8 +75,18 @@ export function Home(props) {
                 fontSize="h5.fontSize"
                 color="text.secondary"
               >
-                Lorem ipsum dolor sit amet.
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero,
+                possimus.
               </Box>
+              <Link to="/companies">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  className="mt-2 exploreButton"
+                >
+                  Explore
+                </Button>
+              </Link>
             </Box>
           </Grid>
           <Grid
@@ -128,10 +141,10 @@ export function Home(props) {
           direction="row"
           justify="center"
           alignItems="center"
-          spacing={0.5}
+          spacing={1}
         >
           {cards.map((card) => (
-            <Grid item lg={4} md={4} sd={4} xs={4}>
+            <Grid item lg={4} md={4} sd={4} xs={4} key={card.title}>
               <Box display="flex" justifyContent="center">
                 <Card className="card-width w-100">
                   <CardActionArea>

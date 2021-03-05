@@ -9,6 +9,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import { companyService } from "../../../shared/services/CompanyService";
 import Container from "@material-ui/core/Container";
 import BusinessIcon from "@material-ui/icons/Business";
 import Typography from "@material-ui/core/Typography";
@@ -85,26 +86,17 @@ export function CompanyModal(props) {
   function addCompanySubmit(e) {
     e.stopPropagation();
     e.preventDefault();
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookies.userToken}`,
-      },
-      body: JSON.stringify({
-        companyName: companyName,
-        location: companyLatitudeLocation + "," + companyLongitudeLocation,
-        companyLogo: companyLogo,
-        companyImage: companyImage,
-        description: companyDescription,
-      }),
-    };
-    fetch("http://localhost:8080/api/companies/add", requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      })
+
+    companyService
+      .addCompany(
+        companyName,
+        companyLatitudeLocation,
+        companyLongitudeLocation,
+        companyLogo,
+        companyImage,
+        companyDescription,
+        cookies.userToken
+      )
       .then((data) => {
         console.log(data);
         props.updateData();
@@ -185,17 +177,16 @@ export function CompanyModal(props) {
                   }}
                   onEditorChange={handleEditorChange}
                 />
-                <div className="row">
-                  <UppyComponent
-                    config={config}
-                    onFileUploadCompleted={handleIconUpload}
-                  ></UppyComponent>
 
-                  <UppyComponent
-                    config={config}
-                    onFileUploadCompleted={handlePictureUpload}
-                  ></UppyComponent>
-                </div>
+                <UppyComponent
+                  config={config}
+                  onFileUploadCompleted={handleIconUpload}
+                ></UppyComponent>
+
+                <UppyComponent
+                  config={config}
+                  onFileUploadCompleted={handlePictureUpload}
+                ></UppyComponent>
 
                 <Button
                   type="submit"

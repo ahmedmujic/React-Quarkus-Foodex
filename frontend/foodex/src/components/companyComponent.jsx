@@ -55,7 +55,7 @@ export function CompanyComponent(props) {
 
   return (
     <Card className={classes.root}>
-      <a href={`/dashboard/company/${props.id}`}>
+      <Link to={`/company/${props.id}`}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
@@ -65,7 +65,7 @@ export function CompanyComponent(props) {
           title={props.companyName}
           subheader="September 14, 2016"
         />
-      </a>
+      </Link>
       <CardMedia className={classes.media} image={props.companyImage} />
       <CardContent>
         <div

@@ -7,6 +7,9 @@ public class ImageDto {
         this.url = url;
     }
 
+    public ImageDto(){
+
+    }
     public String getUrl() {
         return url;
     }
